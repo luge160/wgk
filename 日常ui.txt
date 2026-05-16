@@ -2761,12 +2761,12 @@ function buildKungfuPanel(charKey, char) {
         <div class="wx-kungfu-stats">
           <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">作用范围：</span><span class="wx-kungfu-stat-v">${kf.作用范围}</span></div>
           <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">消耗内力：</span><span class="wx-kungfu-stat-v">${kf.消耗内力??0}</span></div>
-          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">冷却回合：</span><span class="wx-kungfu-stat-v">${kf.冷却[0]}</span></div>
-          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">基础效果：</span><span class="wx-kungfu-stat-v">${kf.基础效果值<1?Math.round(kf.基础效果值*100)+'%':kf.基础效果值}</span></div>
+          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">冷却回合：</span><span class="wx-kungfu-stat-v">${kf.冷却?.[0]??0}</span></div>
+          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">基础效果：</span><span class="wx-kungfu-stat-v">${(kf.基础效果值??0)<1?Math.round((kf.基础效果值??0)*100)+'%':kf.基础效果值??0}</span></div>
           <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">属性加成：</span><span class="wx-kungfu-stat-v">${kf.属性附加影响}</span></div>
-          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">命中率：</span><span class="wx-kungfu-stat-v">${Math.round(kf.命中率*100)}%</span></div>
-          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">伤害浮动：</span><span class="wx-kungfu-stat-v">${kf.伤害浮动[0]}~${kf.伤害浮动[1]}</span></div>
-          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">等级要求：</span><span class="wx-kungfu-stat-v">${kf.等级要求}</span></div>
+          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">命中率：</span><span class="wx-kungfu-stat-v">${Math.round((kf.命中率??0)*100)}%</span></div>
+          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">伤害浮动：</span><span class="wx-kungfu-stat-v">${kf.伤害浮动?.[0]??0}~${kf.伤害浮动?.[1]??0}</span></div>
+          <div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">等级要求：</span><span class="wx-kungfu-stat-v">${kf.等级要求??'无'}</span></div>
           ${(()=>{const e=Object.entries(kf.基本功要求||{}).filter(([,v])=>v);return e.length?`<div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">基本功要求：</span><span class="wx-kungfu-stat-v">${e.map(([k,v])=>`${k}≥${v}`).join(' ')}</span></div>`:''})()}
           ${(()=>{const e=Object.entries(kf.基本功和属性增幅||{}).filter(([,v])=>v);return e.length?`<div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">增幅加成：</span><span class="wx-kungfu-stat-v">${e.map(([k,v])=>`${k}+${v}`).join(' ')}</span></div>`:''})()}
           ${kf.影响状态?.名称!=='无'?`<div class="wx-kungfu-stat"><span class="wx-kungfu-stat-k">状态附加：</span><span class="wx-kungfu-stat-v">${kf.影响状态.名称} | 成功率${Math.round(kf.影响状态.成功率*100)}%${kf.影响状态.数值?' | 效果'+(kf.影响状态.数值>0&&kf.影响状态.数值<1?Math.round(kf.影响状态.数值*100)+'%':kf.影响状态.数值):''} | 持续${kf.影响状态.影响回合===-1?'永久':kf.影响状态.影响回合+'回合'}</span></div>`:''}
