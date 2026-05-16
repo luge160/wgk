@@ -1152,7 +1152,7 @@ function showNpcDetail(key) {
   // 欲望和受孕值显示
   const _lust = n.欲望 ?? 0;
   const _preg = n.受孕值 ?? 0;
-  const _isPregnant = n.怀孕状态 || false;
+  const _isPregnant = n.怀孕状态 && n.怀孕状态.includes('怀孕') && !n.怀孕状态.includes('未怀孕');
   const _isFemale = n.性别 === '女';
   const _lustColor = _lust >= 80 ? 'hsl(320,70%,60%)' : _lust >= 50 ? 'hsl(320,50%,55%)' : 'var(--text-dim)';
   const _lustHtml = `<span style="color:${_lustColor};font-size:13px">${_lust}/100</span>`;
@@ -1160,9 +1160,22 @@ function showNpcDetail(key) {
     ? `<span style="color:${_preg >= 80 ? 'hsl(45,70%,60%)' : _preg >= 50 ? 'hsl(45,50%,55%)' : 'var(--text-dim)'};font-size:13px">${_preg}/100${_isPregnant ? ' <span style="color:hsl(45,70%,60%);font-size:11px">[怀孕]</span>' : ''}</span>`
     : '<span style="color:var(--text-dim);font-size:12px">—</span>';
 
+  // 性器评级显示
+  const _rating = n.性器评级 || '';
+  const _ratingColorMap = {
+    '龙极鼎': '#FFD700', '凤髓玉': '#FFD700',
+    '天罡鼎': '#FF6B6B', '天香玉': '#FF6B6B',
+    '人元鼎': '#4ECDC4', '人伦玉': '#4ECDC4',
+    '凡尘鼎': '#95A5A6', '凡璞玉': '#95A5A6',
+    '残损鼎': '#8B4513', '残缺玉': '#8B4513'
+  };
+  const _ratingColor = _rating ? (_ratingColorMap[_rating] || 'var(--text-soft)') : '';
+  const _ratingHtml = _rating ? `<span style="color:${_ratingColor};font-weight:600;">${_rating}</span>` : '<span style="color:var(--text-dim)">未评级</span>';
+
   const rows = [
     ['性别', `<span>${n.性别||'未知'}</span>`],
     ['等级', `<span>${n.等级||'?'}</span>`],
+    ['性器评级', _ratingHtml],
     ['好感度', _hgHtml],
     ['欲望', _lustHtml],
     ['受孕值', _pregHtml],
@@ -2363,9 +2376,20 @@ function buildNpcCard(key, npc) {
   const favor = npc.好感度 || 0;
   const lust = npc.欲望 || 0;
   const preg = npc.受孕值 || 0;
-  const isPregnant = npc.怀孕状态 || false;
+  const isPregnant = npc.怀孕状态 && npc.怀孕状态.includes('怀孕') && !npc.怀孕状态.includes('未怀孕');
   const contact = npc.最近交集 || '暂无交集';
   const name = npc.姓名 || key;
+  const rating = npc.性器评级 || '';
+
+  // 性器评级颜色映射
+  const ratingColorMap = {
+    '龙极鼎': '#FFD700', '凤髓玉': '#FFD700',
+    '天罡鼎': '#FF6B6B', '天香玉': '#FF6B6B',
+    '人元鼎': '#4ECDC4', '人伦玉': '#4ECDC4',
+    '凡尘鼎': '#95A5A6', '凡璞玉': '#95A5A6',
+    '残损鼎': '#8B4513', '残缺玉': '#8B4513'
+  };
+  const ratingColor = rating ? (ratingColorMap[rating] || 'var(--text-soft)') : '';
 
   const favorPct = Math.max(0, Math.min(100, (favor + 100) / 2));
   const lustPct = Math.max(0, Math.min(100, lust));
@@ -2412,7 +2436,7 @@ function buildNpcCard(key, npc) {
         <div class="wx-npc-avatar ${sexCls}">${name.charAt(0)}</div>
         <div class="wx-npc-info">
           <h4>${name}<span class="wx-npc-sex ${sexCls}">${sex}</span></h4>
-          <div class="wx-npc-meta">Lv.${npc.等级 || 1}</div>
+          <div class="wx-npc-meta">Lv.${npc.等级 || 1}${rating ? ` <span style="color:${ratingColor};margin-left:6px;font-weight:600;">${rating}</span>` : ''}</div>
         </div>
       </div>
       <div class="wx-npc-stat">
